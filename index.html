@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kushal Madappa · Data Science</title>
+<meta name="description" content="Kushal Madappa — MSc Data & Computational Science student at UCD. Machine learning, statistics and backend engineering.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #F3F5F7;
+  --paper-2: #E7EBF0;
+  --ink: #14213D;
+  --muted: #5B6577;
+  --rule: #CBD2DC;
+  --accent: #2F6FDE;
+  --curve: #D99A1E;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0F1726; --paper-2: #18233A; --ink: #E6EBF2; --muted: #9AA6B8;
+    --rule: #2A3752; --accent: #7AA7FF; --curve: #F2C14E;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0F1726; --paper-2: #18233A; --ink: #E6EBF2; --muted: #9AA6B8;
+  --rule: #2A3752; --accent: #7AA7FF; --curve: #F2C14E;
+}
+*, *::before, *::after { box-sizing: inherit; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 72px); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--body); font-size: 1.125rem; line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+img { max-width: 100%; }
+.wrap { width: min(1100px, 100% - 3rem); margin-inline: auto; }
+
+/* Nav */
+header.nav {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule);
+}
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: 60px; }
+.nav .mark { font-family: var(--display); font-weight: 800; font-size: 1.1rem; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
+.nav ul { list-style: none; display: flex; gap: 1.4rem; margin: 0; padding: 0; font-family: var(--display); font-size: 0.95rem; }
+.nav ul a { color: var(--muted); text-decoration: none; }
+.nav ul a:hover { color: var(--ink); }
+@media (max-width: 720px) { .nav ul li.opt { display: none; } .nav ul { gap: 1rem; } }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: 1.05fr 1fr; gap: 3rem; align-items: center; padding: 5rem 0 4rem; }
+.hero h1 {
+  font-family: var(--display); font-weight: 800; font-size: clamp(3rem, 8vw, 5.6rem);
+  line-height: 0.92; letter-spacing: -0.035em; margin: 0 0 1.5rem;
+}
+.hero .lede { font-size: 1.25rem; max-width: 34ch; margin: 0 0 2rem; color: var(--ink); }
+.hero .lede span { color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.btn {
+  font-family: var(--display); font-weight: 600; font-size: 1rem; text-decoration: none;
+  padding: 0.7rem 1.2rem; border-radius: 999px; border: 1.5px solid var(--ink); color: var(--ink);
+  background: transparent; cursor: pointer;
+}
+.btn.solid { background: var(--ink); color: var(--paper); }
+.btn:hover { border-color: var(--accent); }
+.btn.solid:hover { background: var(--accent); }
+
+.plot { background: var(--paper-2); border-radius: 18px; padding: 1rem 1rem 0.8rem; }
+.plot canvas { display: block; width: 100%; height: 320px; }
+.plot figcaption { display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-family: var(--display); font-size: 0.88rem; color: var(--muted); padding-top: 0.6rem; }
+.plot button { font: inherit; color: var(--accent); background: none; border: 0; cursor: pointer; padding: 0.2rem 0; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+@media (max-width: 860px) { .hero { grid-template-columns: 1fr; padding-top: 3rem; gap: 2.5rem; } .plot canvas { height: 240px; } }
+
+/* Sections */
+section { padding: 4rem 0; border-top: 1px solid var(--rule); }
+.split { display: grid; grid-template-columns: 220px 1fr; gap: 2.5rem; }
+@media (max-width: 760px) { .split { grid-template-columns: 1fr; gap: 1rem; } }
+h2 { font-family: var(--display); font-weight: 800; font-size: 1.9rem; letter-spacing: -0.02em; line-height: 1.1; margin: 0; }
+h3 { font-family: var(--display); font-weight: 600; font-size: 1.3rem; letter-spacing: -0.01em; line-height: 1.25; margin: 0 0 0.3rem; }
+p { margin: 0 0 1rem; max-width: 68ch; }
+.meta { font-family: var(--display); font-size: 0.95rem; color: var(--muted); margin-bottom: 0.8rem; }
+ul.points { margin: 0; padding-left: 1.15rem; max-width: 68ch; }
+ul.points li { margin-bottom: 0.5rem; }
+ul.points li::marker { color: var(--accent); }
+
+/* Experience timeline */
+.timeline { border-left: 2px solid var(--rule); padding-left: 1.6rem; }
+.role { position: relative; padding-bottom: 2.4rem; }
+.role:last-child { padding-bottom: 0; }
+.role::before {
+  content: ""; position: absolute; left: calc(-1.6rem - 7px); top: 0.45rem;
+  width: 12px; height: 12px; border-radius: 50%; background: var(--paper); border: 2px solid var(--accent);
+}
+
+/* Projects */
+.featured { background: var(--paper-2); border-radius: 22px; padding: 2rem; margin-bottom: 2.5rem; }
+.featured h3 { font-size: 1.7rem; }
+.award { display: inline-block; font-family: var(--display); font-weight: 600; font-size: 0.9rem; color: var(--paper); background: var(--ink); padding: 0.25rem 0.75rem; border-radius: 999px; margin-bottom: 1rem; }
+.project { padding: 1.6rem 0; border-bottom: 1px solid var(--rule); }
+.project:last-child { border-bottom: 0; }
+.stack { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.2rem 0 0.9rem; padding: 0; list-style: none; }
+.stack li { font-family: var(--display); font-size: 0.82rem; color: var(--muted); border: 1px solid var(--rule); border-radius: 6px; padding: 0.1rem 0.5rem; }
+.featured .stack li { border-color: color-mix(in srgb, var(--muted) 45%, transparent); }
+.repo { font-family: var(--display); font-weight: 600; font-size: 0.95rem; }
+
+/* Publication */
+blockquote.cite { margin: 0; padding: 1.4rem 1.6rem; border-left: 4px solid var(--curve); background: var(--paper-2); border-radius: 0 14px 14px 0; max-width: 72ch; }
+blockquote.cite em { font-style: italic; }
+
+/* Skills */
+dl.skills { display: grid; grid-template-columns: 170px 1fr; gap: 0.7rem 1.5rem; margin: 0; max-width: 820px; }
+dl.skills dt { font-family: var(--display); font-weight: 600; }
+dl.skills dd { margin: 0; color: var(--ink); }
+@media (max-width: 560px) { dl.skills { grid-template-columns: 1fr; gap: 0.1rem; } dl.skills dd { margin-bottom: 0.8rem; } }
+
+/* Education */
+.edu { margin-bottom: 2rem; }
+.edu:last-child { margin-bottom: 0; }
+
+/* Contact */
+.contact h2 { font-size: clamp(2.2rem, 5vw, 3.4rem); max-width: 16ch; margin-bottom: 1.2rem; }
+.links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+footer { padding: 2rem 0 3rem; font-family: var(--display); font-size: 0.9rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="mark" href="#top">Kushal Madappa</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li class="opt"><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li class="opt"><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div>
+      <h1>Kushal<br>Madappa</h1>
+      <p class="lede">I build machine learning models and the software that puts them to use. <span>MSc Data &amp; Computational Science at University College Dublin.</span></p>
+      <div class="actions">
+        <a class="btn solid" href="#projects">See my projects</a>
+        <a class="btn" href="cv.pdf" download>Download CV</a>
+      </div>
+    </div>
+    <figure class="plot" style="margin:0">
+      <canvas id="plot" role="img" aria-label="Scatter plot of noisy data points with a smooth kernel regression curve fitted through them"></canvas>
+      <figcaption>
+        <span>Kernel regression on 90 noisy points, fitted live in your browser.</span>
+        <button id="resample" type="button">New sample</button>
+      </figcaption>
+    </figure>
+  </div>
+
+  <section id="about">
+    <div class="wrap split">
+      <h2>About</h2>
+      <div>
+        <p>I'm studying for an MSc in Data &amp; Computational Science at UCD, after graduating with First Class Honours in Computer Science and Business Systems from JSS Science and Technology University, in the top 5% of my cohort.</p>
+        <p>My first-author paper on deep learning for brain tumour detection was published by Springer and won Best Paper at ICACECS 2025. Before that, I spent nine months on the V2X team at LG Soft India, and more recently built the delivery backend for a photobook e-commerce platform as a freelance developer.</p>
+        <p>I'm looking for part-time or internship data science roles during the MSc, and graduate data scientist positions from September 2027.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap split">
+      <h2>Experience</h2>
+      <div class="timeline">
+        <article class="role">
+          <h3>Freelance Full-Stack Developer, PhotoBook Pro</h3>
+          <div class="meta">Mar 2026 – Jul 2026 · Contract for a retail client in Mysuru, one of three developers</div>
+          <p>An e-commerce platform where customers design photobooks in a browser editor, order them, and have them printed by partner labs and shipped with live tracking.</p>
+          <ul class="points">
+            <li>Owned the delivery subsystem end to end in Python, FastAPI and PostgreSQL: the shipment data model, a client for the Shiprocket courier API, and a webhook receiver with HMAC verification and idempotency guards that kept tracking correct under duplicate and out-of-order callbacks.</li>
+            <li>Built automatic album generation in Next.js and Fabric.js, laying out complete pages from uploaded photos before handing off to the editor.</li>
+          </ul>
+        </article>
+        <article class="role">
+          <h3>V2X Engineer Intern, LG Soft India</h3>
+          <div class="meta">Jul 2024 – Mar 2025 · Bengaluru · Vehicle Component Solutions division</div>
+          <ul class="points">
+            <li>Built a Python tool that scans large log directories to find specific entries and their source files. The test team still uses it daily; a manual search now takes seconds.</li>
+            <li>Validated V2X communication protocol implementations and debugged modules across the automotive communication stack, in an agile team over a nine-month placement.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap split">
+      <h2>Projects</h2>
+      <div>
+        <article class="featured">
+          <span class="award">Best Paper, ICACECS 2025</span>
+          <h3>Brain tumour classification from MRI</h3>
+          <ul class="stack" aria-label="Tools used"><li>Python</li><li>TensorFlow</li><li>Keras</li><li>Flask</li></ul>
+          <ul class="points">
+            <li>Two-stage pipeline on 7,023 MRI scans: VGG19-UNet segmentation isolates the tumour region, then EfficientNetB1 classifies glioma, meningioma, pituitary tumour or no tumour.</li>
+            <li>A baseline CNN reached 96% test accuracy; EfficientNetB1 with transfer learning came close to perfect. Investigating that gap exposed a likely patient-level leakage risk in the public train/test split, which grouped cross-validation by patient would address.</li>
+            <li>Served the model through a Flask app that accepts an MRI upload and returns a prediction.</li>
+          </ul>
+          <a class="repo" href="https://github.com/Kushal-Madappa">View on GitHub</a>
+        </article>
+
+        <article class="project">
+          <h3>Malware detection web app</h3>
+          <ul class="stack" aria-label="Tools used"><li>Python</li><li>scikit-learn</li><li>pandas</li><li>Flask</li></ul>
+          <p>Classifies Windows executables as malicious or benign from static file features, without running them. I cleaned malformed entries, encoded header fields and corrected class imbalance, then chose HistGradientBoosting after benchmarking it against simpler baselines. Evaluation focused on recall, since a missed malicious file costs more than a false alarm. A Flask front end returns a label and confidence for any uploaded .exe.</p>
+          <a class="repo" href="https://github.com/Kushal-Madappa">View on GitHub</a>
+        </article>
+
+        <article class="project">
+          <h3>Gesture-based volume control</h3>
+          <ul class="stack" aria-label="Tools used"><li>Python</li><li>OpenCV</li><li>MediaPipe</li></ul>
+          <p>Controls system volume with hand gestures from an ordinary webcam. MediaPipe tracks finger landmarks frame by frame and maps the thumb-to-index distance to volume, with smoothing and thresholds to stop detection jitter from changing the level. The loop is tuned to stay responsive on consumer laptops.</p>
+          <a class="repo" href="https://github.com/Kushal-Madappa">View on GitHub</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="publication">
+    <div class="wrap split">
+      <h2>Publication</h2>
+      <div>
+        <blockquote class="cite">
+          <p style="margin-bottom:.6rem">Madappa, K., Rutvik Sharma, G., Keerthi Vasan, R., Ankith, L., Nagarjun, A. (2026). A Hybrid Deep Learning and U-Net Architecture for Automated Brain Tumor Detection and Classification. In <em>Proceedings of ICACECS 2025</em>, Smart Innovation, Systems and Technologies, vol. 489, pp. 503–512. Springer, Cham.</p>
+          <a href="https://doi.org/10.1007/978-3-032-22118-6_45">doi.org/10.1007/978-3-032-22118-6_45</a>
+        </blockquote>
+        <p style="margin-top:1rem">Awarded Best Paper at ICACECS 2025, VNR Vignana Jyothi Institute of Engineering and Technology, Hyderabad. I presented it as first author.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap split">
+      <h2>Skills</h2>
+      <dl class="skills">
+        <dt>Languages</dt><dd>Python, R, SQL, C</dd>
+        <dt>ML &amp; statistics</dt><dd>Statistical analysis, scikit-learn, TensorFlow, Keras, pandas, NumPy, Matplotlib</dd>
+        <dt>Data &amp; backend</dt><dd>PostgreSQL, MySQL, FastAPI, REST APIs</dd>
+        <dt>Cloud</dt><dd>AWS (EC2, S3, RDS, IAM, VPC, ELB), Google Cloud Platform</dd>
+        <dt>LLMs</dt><dd>Anthropic and OpenAI APIs, LangChain, RAG pipelines, prompt engineering</dd>
+        <dt>Tools</dt><dd>Git, Docker, Jupyter, VS Code, Power BI, Tableau, Excel</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="wrap split">
+      <h2>Education</h2>
+      <div>
+        <div class="edu">
+          <h3>MSc Data &amp; Computational Science</h3>
+          <div class="meta">University College Dublin · 2026 – 2027</div>
+          <p>Modules include Data Programming with Python and R, Statistical Machine Learning, AI &amp; Machine Learning, Exploratory Data Analytics, Foundations of Statistics and Cloud Computing.</p>
+        </div>
+        <div class="edu">
+          <h3>B.E. Computer Science and Business Systems</h3>
+          <div class="meta">JSS Science and Technology University, Mysuru · 2021 – 2025</div>
+          <p>First Class Honours, CGPA 9.31/10, top 5% of cohort. Highest marks in Computational Statistics and in Cloud, Microservices &amp; Applications.</p>
+        </div>
+        <div class="edu">
+          <h3>Certifications</h3>
+          <p>Google Cloud Skills Boost Arcade Legend (highest tier) · Python for Data Science and Machine Learning Bootcamp · Introduction to Cloud Computing on AWS · Google Data Analytics Professional Certificate (in progress)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <h2>Hiring for data science in Dublin? Let's talk.</h2>
+      <p>The quickest way to reach me is email.</p>
+      <div class="links">
+        <a class="btn solid" href="mailto:kushalmadappa19@gmail.com">Email me</a>
+        <a class="btn" href="https://linkedin.com/in/kushal-madappa">LinkedIn</a>
+        <a class="btn" href="https://github.com/Kushal-Madappa">GitHub</a>
+        <a class="btn" href="https://leetcode.com/u/kushal_madappa">LeetCode</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Kushal Madappa · Dublin, Ireland</div>
+</footer>
+
+<script>
+(function () {
+  const canvas = document.getElementById("plot");
+  const ctx = canvas.getContext("2d");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let pts = [], curve = [], raf = null;
+
+  function rng(seed) { return function () { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }; }
+  function gauss(r) { let u = 0, v = 0; while (!u) u = r(); v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+
+  function sample(seed) {
+    const r = rng(seed);
+    const a = 0.8 + r() * 0.8, b = r() * Math.PI, c = 0.25 + r() * 0.3;
+    pts = [];
+    for (let i = 0; i < 90; i++) {
+      const x = r();
+      const y = 0.5 + c * Math.sin(2 * Math.PI * a * x + b) + 0.12 * (x - 0.5) + 0.09 * gauss(r);
+      pts.push([x, y]);
+    }
+    // Nadaraya–Watson estimator, Gaussian kernel
+    const h = 0.06; curve = [];
+    for (let i = 0; i <= 160; i++) {
+      const x = i / 160; let num = 0, den = 0;
+      for (const [px, py] of pts) { const w = Math.exp(-((x - px) ** 2) / (2 * h * h)); num += w * py; den += w; }
+      curve.push([x, num / den]);
+    }
+  }
+
+  function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+  function draw(progress) {
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if (canvas.width !== Math.round(w * dpr)) { canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    const pad = 14;
+    const X = x => pad + x * (w - 2 * pad);
+    const Y = y => h - pad - Math.min(Math.max(y, -0.05), 1.05) * (h - 2 * pad);
+
+    ctx.strokeStyle = css("--rule"); ctx.lineWidth = 1;
+    for (let i = 1; i < 5; i++) { const gy = pad + i * (h - 2 * pad) / 5; ctx.beginPath(); ctx.moveTo(pad, gy); ctx.lineTo(w - pad, gy); ctx.stroke(); }
+
+    const shown = Math.min(1, progress * 2.2);
+    ctx.fillStyle = css("--accent");
+    pts.forEach(([x, y], i) => {
+      if (i / pts.length > shown) return;
+      ctx.globalAlpha = 0.75; ctx.beginPath(); ctx.arc(X(x), Y(y), 3.4, 0, Math.PI * 2); ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+
+    const cp = Math.max(0, (progress - 0.4) / 0.6);
+    if (cp > 0) {
+      ctx.strokeStyle = css("--curve"); ctx.lineWidth = 3.5; ctx.lineJoin = "round"; ctx.lineCap = "round";
+      ctx.beginPath();
+      const n = Math.floor(cp * (curve.length - 1));
+      for (let i = 0; i <= n; i++) { const [x, y] = curve[i]; i ? ctx.lineTo(X(x), Y(y)) : ctx.moveTo(X(x), Y(y)); }
+      ctx.stroke();
+    }
+  }
+
+  function play() {
+    cancelAnimationFrame(raf);
+    if (reduce) { draw(1); return; }
+    const start = performance.now(), dur = 1800;
+    (function frame(t) { const p = Math.min(1, (t - start) / dur); draw(1 - Math.pow(1 - p, 3)); if (p < 1) raf = requestAnimationFrame(frame); })(start);
+  }
+
+  sample(20260908); play();
+  document.getElementById("resample").addEventListener("click", () => { sample(Math.floor(Math.random() * 1e9)); play(); });
+  window.addEventListener("resize", () => draw(1));
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => draw(1));
+})();
+</script>
+</body>
+</html>
